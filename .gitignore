@@ -69,3 +69,6 @@ out/
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+
+# Ignores database folder
+/db
