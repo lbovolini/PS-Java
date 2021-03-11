@@ -32,8 +32,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .map(shoppingCart -> ObjectMapper.map(shoppingCart, ShoppingCartDTO.class));
     }
 
+    @Transactional
     @Override
     public void delete(long id) {
+        cartProductRepository.deleteAllByShoppingCartId(id);
         shoppingCartRepository.deleteById(id);
     }
 
