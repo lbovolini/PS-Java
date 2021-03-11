@@ -1,43 +1,45 @@
 package br.com.supera.game.store.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 public class ShoppingCartDTO {
 
-    private long id;
+    private Long id;
 
-    private long userId;
+    @NotNull
+    private Long userId;
 
-    private Collection<ProductDTO> productDTOCollection;
+    private Collection<ProductDTO> products;
 
     public ShoppingCartDTO() {
     }
 
-    public ShoppingCartDTO(long id) {
+    public ShoppingCartDTO(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Collection<ProductDTO> getProductDTOCollection() {
-        return productDTOCollection;
+    public Collection<ProductDTO> getProducts() {
+        return products;
     }
 
-    public void setProductDTOCollection(Collection<ProductDTO> productDTOCollection) {
-        this.productDTOCollection = productDTOCollection;
+    public void setProducts(Collection<ProductDTO> products) {
+        this.products = products;
     }
 }

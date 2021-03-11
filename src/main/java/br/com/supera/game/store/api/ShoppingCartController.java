@@ -1,7 +1,6 @@
 package br.com.supera.game.store.api;
 
 import br.com.supera.game.store.dto.ShoppingCartDTO;
-import br.com.supera.game.store.model.ShoppingCart;
 import br.com.supera.game.store.service.ShoppingCartService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<ShoppingCart> find(@PathVariable long id) {
+    public ResponseEntity<ShoppingCartDTO> find(@PathVariable long id) {
         return shoppingCartService.find(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -50,8 +49,8 @@ public class ShoppingCartController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@Valid @RequestBody ShoppingCart shoppingCart) {
-        shoppingCartService.update(shoppingCart);
+    public ResponseEntity<Void> update(@Valid @RequestBody ShoppingCartDTO shoppingCartDTO) {
+        shoppingCartService.update(shoppingCartDTO);
 
         return ResponseEntity.ok().build();
     }

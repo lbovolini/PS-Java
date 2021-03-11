@@ -11,10 +11,17 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotBlank
     private String username;
+
+    public User() {
+    }
+
+    public User(long id) {
+        this.id = id;
+    }
 
     public long getId() {
         return id;

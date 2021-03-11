@@ -8,7 +8,7 @@ public class CartProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "shopping_cart_id", insertable = false, updatable = false)
@@ -26,6 +26,14 @@ public class CartProduct {
     @Column(name = "product_id")
     private Long productId;
 
+    public CartProduct() {
+    }
+
+    public CartProduct(Long shoppingCartId, Long productId) {
+        this.id = 0L;
+        this.shoppingCartId = shoppingCartId;
+        this.productId = productId;
+    }
 
     public long getId() {
         return id;
