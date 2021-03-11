@@ -1,14 +1,12 @@
 package br.com.supera.game.store.api;
 
-import br.com.supera.game.store.model.Product;
+import br.com.supera.game.store.dto.ShoppingCartDTO;
 import br.com.supera.game.store.model.ShoppingCart;
 import br.com.supera.game.store.service.ShoppingCartService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -25,26 +23,35 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    public ResponseEntity delete(long id) {
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        shoppingCartService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity find(long id) {
-
-        return ResponseEntity.ok().build();
+    @GetMapping(value = "{id}")
+    public ResponseEntity<ShoppingCart> find(@PathVariable long id) {
+        return shoppingCartService.find(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity save(@Valid @RequestBody Product product) {
+    public ResponseEntity<Long> save(@Valid @RequestBody ShoppingCartDTO shoppingCartDTO) {
+        long shoppingCartId = shoppingCartService.save(shoppingCartDTO);
 
-        String path = "";
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path(shoppingCartId + "/")
+                .build()
+                .toUri();
 
-        return ResponseEntity.created(URI.create(path)).build();
+        return ResponseEntity.created(location).body(shoppingCartId);
     }
 
-
-    public ResponseEntity update(ShoppingCart shoppingCart) {
+    @PutMapping
+    public ResponseEntity<Void> update(@Valid @RequestBody ShoppingCart shoppingCart) {
+        shoppingCartService.update(shoppingCart);
 
         return ResponseEntity.ok().build();
     }

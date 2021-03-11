@@ -1,17 +1,10 @@
 package br.com.supera.game.store.repository;
 
 import br.com.supera.game.store.model.ShoppingCart;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-public interface ShoppingCartRepository {
-
-    void delete(long id);
-
-    Optional<ShoppingCart> find(long id);
-
-    ShoppingCart save(ShoppingCart shoppingCart);
-
-    ShoppingCart update(ShoppingCart shoppingCart);
+@Repository
+public interface ShoppingCartRepository extends CustomShoppingCartRepository, JpaRepository<ShoppingCart, Long> {
 
 }

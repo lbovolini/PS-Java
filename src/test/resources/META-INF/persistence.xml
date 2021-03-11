@@ -4,6 +4,8 @@
 
             <provider>org.hibernate.ejb.HibernatePersistence</provider>
             <class>br.com.supera.game.store.model.Product</class>
+            <class>br.com.supera.game.store.model.ShoppingCart</class>
+            <class>br.com.supera.game.store.model.CartProduct</class>
 
             <properties>
                 <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />

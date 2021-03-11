@@ -1,18 +1,25 @@
 package br.com.supera.game.store.repository;
 
+import br.com.supera.game.store.dto.ShoppingCartDTO;
+import br.com.supera.game.store.model.CartProduct;
+import br.com.supera.game.store.model.Product;
 import br.com.supera.game.store.model.ShoppingCart;
-import org.springframework.stereotype.Repository;
+import com.github.lbovolini.mapper.ObjectMapper;
+import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Repository
+@Primary
 @Transactional
-public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
+public class CustomShoppingCartRepositoryImpl implements CustomShoppingCartRepository {
 
-    @PersistenceContext(name = "productDS")
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
@@ -26,10 +33,27 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
     }
 
     @Override
-    public ShoppingCart save(ShoppingCart shoppingCart) {
-        entityManager.persist(shoppingCart);
+    public ShoppingCart save(ShoppingCartDTO shoppingCartDTO) {
 
-        return shoppingCart;
+        ShoppingCart shoppingCart = ObjectMapper.map(shoppingCartDTO, ShoppingCart.class);
+
+        final ShoppingCart savedShoppingCart = entityManager.merge(shoppingCart);
+
+        Collection<Product> productCollection = ObjectMapper.map(shoppingCartDTO.getProductDTOCollection(), ArrayList.class);
+
+        Collection<CartProduct> cartProductCollection = productCollection.stream().map(product -> {
+            CartProduct cartProduct = new CartProduct();
+            cartProduct.setShoppingCartId(savedShoppingCart.getId());
+            cartProduct.setProductId(product.getId());
+
+            return cartProduct;
+        }).collect(Collectors.toList());
+
+        for (CartProduct cartProduct : cartProductCollection) {
+            entityManager.merge(cartProduct);
+        }
+
+        return savedShoppingCart;
     }
 
     @Override
