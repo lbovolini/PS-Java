@@ -35,6 +35,26 @@ public class CartProduct {
         this.productId = productId;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     public long getId() {
         return id;
     }
@@ -57,5 +77,14 @@ public class CartProduct {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    @Override
+    public String toString() {
+        return "CartProduct{" +
+                "id=" + id +
+                ", shoppingCartId=" + shoppingCartId +
+                ", productId=" + productId +
+                '}';
     }
 }

@@ -16,4 +16,6 @@ public interface ProductRepository {
     Product save(Product product);
 
     Product update(Product product);
+
+    Optional<Collection<Product>> findAllByShoppingCartId(Long id);
 }

@@ -1,10 +1,12 @@
 package br.com.supera.game.store.service;
 
+import br.com.supera.game.store.dto.ProductDTO;
 import br.com.supera.game.store.dto.ShoppingCartDTO;
 import br.com.supera.game.store.model.CartProduct;
 import br.com.supera.game.store.model.Product;
 import br.com.supera.game.store.model.ShoppingCart;
 import br.com.supera.game.store.repository.CartProductRepository;
+import br.com.supera.game.store.repository.ProductRepository;
 import br.com.supera.game.store.repository.ShoppingCartRepository;
 import com.github.lbovolini.mapper.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -19,17 +21,32 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
     private final CartProductRepository cartProductRepository;
+    private final ProductRepository productRepository;
 
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository,
-                                   CartProductRepository cartProductRepository) {
+                                   CartProductRepository cartProductRepository,
+                                   ProductRepository productRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.cartProductRepository = cartProductRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
     public Optional<ShoppingCartDTO> find(long id) {
-        return shoppingCartRepository.findById(id)
-                .map(shoppingCart -> ObjectMapper.map(shoppingCart, ShoppingCartDTO.class));
+
+        Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(id);
+
+        Optional<Collection<ProductDTO>> productDTOsOptional = shoppingCartOptional
+                .flatMap(shoppingCart -> {
+                    Optional<Collection<Product>> optionalProducts = productRepository.findAllByShoppingCartId(shoppingCart.getId());
+                    return optionalProducts.flatMap(products -> Optional.ofNullable(ObjectMapper.map(products, ProductDTO.class)));
+                });
+
+        return shoppingCartOptional.map(shoppingCart -> {
+            ShoppingCartDTO shoppingCartDTO = ObjectMapper.map(shoppingCart, ShoppingCartDTO.class);
+            productDTOsOptional.ifPresent(shoppingCartDTO::setProducts);
+            return shoppingCartDTO;
+        });
     }
 
     @Transactional
