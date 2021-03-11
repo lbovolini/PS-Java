@@ -65,6 +65,7 @@ local.properties
 # IntelliJ
 .idea
 out/
+*.iml
 
 # Gradle
 .idea/**/gradle.xml
