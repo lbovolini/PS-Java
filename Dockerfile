@@ -8,7 +8,7 @@ WORKDIR ${APP_FOLDER}
 COPY src src
 COPY pom.xml pom.xml
 
-RUN mvn -Dmaven.test.skip=true clean package
+RUN --mount=type=cache,target=/root/.m2 mvn -Dmaven.test.skip=true clean package
 
 # Run
 FROM openjdk:11-jre-slim
