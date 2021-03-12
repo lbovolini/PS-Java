@@ -31,6 +31,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     @Override
     public Optional<ShoppingCartDTO> find(long id) {
 
@@ -76,9 +77,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartId;
     }
 
+    @Transactional
     @Override
     public void update(ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = ObjectMapper.map(shoppingCartDTO, ShoppingCart.class);
-        shoppingCartRepository.save(shoppingCart);
+        Collection<Product> products = ObjectMapper.map(shoppingCartDTO.getProducts(), Product.class);
+        shoppingCartRepository.update(shoppingCart);
+        cartProductRepository.updateAll(shoppingCartDTO.getId(), products);
     }
 }
