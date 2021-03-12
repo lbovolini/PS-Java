@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS `game_store`.`cart_product` (
   `shopping_cart_id` BIGINT NOT NULL,
   `product_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `shopping_cart_id_UNIQUE` (`shopping_cart_id` ASC) VISIBLE,
   FOREIGN KEY (`shopping_cart_id`)
   REFERENCES `game_store`.`shopping_cart` (`id`),
   FOREIGN KEY (`product_id`)
@@ -42,3 +41,6 @@ CREATE TABLE IF NOT EXISTS `game_store`.`cart_product` (
 );
 
 INSERT INTO user VALUES(null, "user");
+INSERT INTO product VALUES(null, "produto", 1, 1, "img");
+
+
