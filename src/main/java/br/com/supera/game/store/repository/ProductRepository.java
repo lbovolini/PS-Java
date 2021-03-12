@@ -1,21 +1,7 @@
 package br.com.supera.game.store.repository;
 
 import br.com.supera.game.store.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
-import java.util.Optional;
-
-public interface ProductRepository {
-
-    void delete(long id);
-
-    Optional<Product> find(long id);
-
-    Collection<Product> findAll();
-
-    Product save(Product product);
-
-    Product update(Product product);
-
-    Optional<Collection<Product>> findAllByShoppingCartId(Long id);
+public interface ProductRepository extends CustomProductRepository, JpaRepository<Product, Long> {
 }
