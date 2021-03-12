@@ -65,7 +65,11 @@ local.properties
 # IntelliJ
 .idea
 out/
+*.iml
 
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+
+# Ignores database folder
+/db
